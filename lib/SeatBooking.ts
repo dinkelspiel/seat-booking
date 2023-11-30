@@ -1,7 +1,7 @@
 import { h, render } from "preact";
 import RootComponent, { IRootComponentProps } from "./components/root";
 
-type SeatBookingAttribute = "data-layout" | "data-occupied" | "data-selected-seat" | "data-can-override";
+type SeatBookingAttribute = "data-layout" | "data-occupied" | "data-selected-seat" | "data-can-override" | "data-labels";
 
 export default function createSeatBookingClass() {
   return class SeatBooking extends HTMLElement {
@@ -10,6 +10,7 @@ export default function createSeatBookingClass() {
 
     private layout: number[] = [];
     private occupied: string[] = [];
+    private labels: string[] = [];
     private canRender: boolean = false;
     private selectedSeat: string = null;
     private canOverride: boolean = false;
@@ -24,6 +25,16 @@ export default function createSeatBookingClass() {
         .filter(el => el.length > 0)
         .map(str => parseInt(str, 10))
         .filter(el => !isNaN(el));
+    }
+    private set labelsAttribute(value: string) {
+      if (value == null || !/^(\w+(?:,\s\w+))(?:,)$/.test(value)) {
+        throw new Error(
+          `Expected attribute data-labels with value '${value}' to be valid (regexp: /^(\w+(?:,\s\w+))(?:,)$/)`
+        );
+      }
+      this.labels = value.split(",")
+        .map(str => str.trim())
+        .filter(el => el != "");
     }
     private set occupiedAttribute(value: string) {
       if (value == null || !/^\d+(?:\,\d+)*$/.test(value)) {
@@ -54,7 +65,8 @@ export default function createSeatBookingClass() {
         "data-layout",
         "data-occupied",
         "data-selected-seat",
-        "data-can-override"
+        "data-can-override",
+        "data-labels"
       ];
     }
 
@@ -89,7 +101,8 @@ export default function createSeatBookingClass() {
         layout: this.layout,
         occupied: this.occupied,
         onSeatSelected: this.onSeatSelected,
-        selectedId: this.selectedSeat
+        selectedId: this.selectedSeat,
+        labels: this.labels
       };
       return render(h(RootComponent, props), (this.shadow as Element), this.renderedNode);
     }
@@ -103,6 +116,8 @@ export default function createSeatBookingClass() {
         this.selectedSeatAttribute = newValue;
       } else if (attribute === "data-can-override") {
         this.canOverrideAttribute = newValue;
+      } else if (attribute === "data-labels") {
+        this.labelsAttribute = newValue;
       }
 
       if (this.canRender) {

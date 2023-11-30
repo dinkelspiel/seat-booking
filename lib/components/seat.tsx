@@ -7,6 +7,7 @@ interface ISeatProps {
   canOverride: boolean;
   id: string;
   selected: boolean;
+  label: string;
   onClick: (id: string) => void;
 }
 
@@ -21,26 +22,29 @@ export default class Seat extends Component<ISeatProps, ISeatState> {
     }
   }
 
-  public render({ id, onClick, occupied, canOverride, selected }: ISeatProps) {
+  public render({ id, onClick, occupied, canOverride, selected, label }: ISeatProps) {
     return (
-      <rect
-        data-id={id}
-        data-can-override={canOverride}
-        data-occupied={occupied}
-        data-selected={selected}
-        className={
-          [
-            "SEATBOOKING-seat",
-            occupied && "SEATBOOKING-occupied",
-            selected && "SEATBOOKING-selected"
-          ]
-          .filter(el => typeof el === "string")
-          .join(" ")
-        }
-        width={SeatSize}
-        height={SeatSize}
-        onClick={this.onClicked}
-      />
+      <div>
+        <rect
+          data-id={id}
+          data-can-override={canOverride}
+          data-occupied={occupied}
+          data-selected={selected}
+          className={
+            [
+              "SEATBOOKING-seat",
+              occupied && "SEATBOOKING-occupied",
+              selected && "SEATBOOKING-selected"
+            ]
+            .filter(el => typeof el === "string")
+            .join(" ")
+          }
+          width={SeatSize}
+          height={SeatSize}
+          onClick={this.onClicked}
+        />
+        { label }
+      </div>
     );
   }
 }

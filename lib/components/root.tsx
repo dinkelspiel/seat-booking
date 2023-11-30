@@ -16,6 +16,7 @@ import { SeatSize } from "./seat";
 export interface IRootComponentProps {
   canOverride: boolean;
   layout: number[];
+  labels: string[];
   occupied: string[];
   selectedId: string;
   onSeatSelected: (id: string) => void;
