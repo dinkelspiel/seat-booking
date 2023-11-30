@@ -15,6 +15,15 @@ export default function createSeatBookingClass() {
     private selectedSeat: string = null;
     private canOverride: boolean = false;
 
+    isJsonString(str) {
+      try {
+          JSON.parse(str);
+      } catch (e) {
+          return false;
+      }
+      return true;
+    }
+
     private set layoutAttribute(value: string) {
       if (value == null || !/^\d+(?:\,\d+)*$/.test(value)) {
         throw new Error(
@@ -27,14 +36,13 @@ export default function createSeatBookingClass() {
         .filter(el => !isNaN(el));
     }
     private set labelsAttribute(value: string) {
-      if (value == null || !/^(\w+(?:,\s\w+))(?:,)$/.test(value)) {
+      if (value == null || !this.isJsonString(value)) {
         throw new Error(
-          `Expected attribute data-labels with value '${value}' to be valid (regexp: /^(\w+(?:,\s\w+))(?:,)$/)`
+          `Expected attribute data-labels with value '${value}' to not be empty and expects to be a json object`
         );
       }
-      this.labels = value.split(",")
-        .map(str => str.trim())
-        .filter(el => el != "");
+      this.labels = JSON.parse(value);
+      console.log(this.labels);
     }
     private set occupiedAttribute(value: string) {
       if (value == null || !/^\d+(?:\,\d+)*$/.test(value)) {

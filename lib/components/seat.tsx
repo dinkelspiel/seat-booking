@@ -8,6 +8,8 @@ interface ISeatProps {
   id: string;
   selected: boolean;
   label: string;
+  angle: number;
+  xOffset: number;
   onClick: (id: string) => void;
 }
 
@@ -22,9 +24,9 @@ export default class Seat extends Component<ISeatProps, ISeatState> {
     }
   }
 
-  public render({ id, onClick, occupied, canOverride, selected, label }: ISeatProps) {
+  public render({ id, onClick, occupied, canOverride, selected, label, angle, xOffset }: ISeatProps) {
     return (
-      <div>
+      <g transform={`translate(${xOffset},0)`}>
         <rect
           data-id={id}
           data-can-override={canOverride}
@@ -43,8 +45,8 @@ export default class Seat extends Component<ISeatProps, ISeatState> {
           height={SeatSize}
           onClick={this.onClicked}
         />
-        { label }
-      </div>
+        <text x="0" y="0" filter="url(#solid)" transform={`rotate(${angle})`}>{ label }</text>
+      </g>
     );
   }
 }

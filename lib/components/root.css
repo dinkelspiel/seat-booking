@@ -3,3 +3,13 @@
   align-items: center;
   justify-content: center;
 }
+
+svg text {
+  display: none; 
+  pointer-events: none;
+  font: bold 16px sans-serif;
+}
+svg g:hover > text {
+  display: block;
+}
+

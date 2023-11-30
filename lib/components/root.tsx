@@ -16,7 +16,7 @@ import { SeatSize } from "./seat";
 export interface IRootComponentProps {
   canOverride: boolean;
   layout: number[];
-  labels: string[];
+  labels: object;
   occupied: string[];
   selectedId: string;
   onSeatSelected: (id: string) => void;
@@ -121,7 +121,7 @@ export default class RootComponent extends Component<IRootComponentProps, IRootC
     this.props.onSeatSelected(id);
   }
 
-  public render({layout, occupied, canOverride}: IRootComponentProps) {
+  public render({layout, occupied, labels, canOverride}: IRootComponentProps) {
     return (
       <div
         className="SEATBOOKING-root"
@@ -131,6 +131,13 @@ export default class RootComponent extends Component<IRootComponentProps, IRootC
         <svg width={this.state.maxWidth} height={this.state.maxHeight}>
           <defs>
             <OccupiedSeatPattern size={10} id="occupied"/>
+            <filter x="0" y="0" width="1" height="1" id="solid">
+              <feFlood flood-color="#ffb04a" result="bg" />
+              <feMerge>
+                <feMergeNode in="bg"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
           </defs>
           <g transform={`translate(${SeatSize}, ${SeatSize})`}>
             {
@@ -141,6 +148,7 @@ export default class RootComponent extends Component<IRootComponentProps, IRootC
                   canOverride={canOverride}
 
                   occupied={occupied}
+                  labels={labels}
                   indexOffset={el.indexOffset}
                   originX={el.x}
                   originY={el.y}
