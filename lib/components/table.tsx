@@ -17,7 +17,7 @@ const Table = ({ occupied, leftSeatId, rightSeatId, selectedId, canOverride, lab
     <g>
       <Seat
         occupied={occupied.indexOf(rightSeatId) >= 0}
-        label={labels[occupied.indexOf(rightSeatId)]}
+        label={labels[rightSeatId]}
         canOverride={canOverride}
         selected={rightSeatId === selectedId}
         id={rightSeatId}

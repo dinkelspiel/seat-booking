@@ -45,7 +45,7 @@ export default class Seat extends Component<ISeatProps, ISeatState> {
           height={SeatSize}
           onClick={this.onClicked}
         />
-        <text x="0" y="0" filter="url(#solid)" transform={`rotate(${angle})`}>{ label }</text>
+        <text x="0" y="23" filter="url(#solid)">{ label }</text>
       </g>
     );
   }
